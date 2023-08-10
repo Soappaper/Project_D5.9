@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import NewsListView, NewDetailView, SearchNewsListView, NewAddCreateView, NewUpdateView, NewDeleteView
-
+from django.contrib.auth.views import LoginView
 
 urlpatterns = [
    path('', NewsListView.as_view()),
@@ -12,4 +12,5 @@ urlpatterns = [
    path('article/create/', NewAddCreateView.as_view(), name='article_create'),
    path('article/<int:pk>/edit', NewUpdateView.as_view(), name='article_edit'),
    path('article/<int:pk>/delete', NewDeleteView.as_view(), name='article_delete'),
+   path('login/', LoginView.as_view(template_name="login.html"), name='login'),
 ]

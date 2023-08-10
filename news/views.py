@@ -1,5 +1,5 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Post
 from .filters import NewsFilter
 from .forms import NewForm
@@ -42,7 +42,7 @@ class NewAddCreateView(CreateView):
         # post.author = ???
         return super().form_valid(form)
 
-class NewUpdateView(UpdateView):
+class NewUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'new_edit.html'
     form_class = NewForm
 
