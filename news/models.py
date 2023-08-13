@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
-
+from allauth.account.forms import SignupForm
 
 TYPE_POST = [
     ('article', 'статья'),
