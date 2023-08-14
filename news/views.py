@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Post
 from .filters import NewsFilter
 from .forms import NewForm
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -74,7 +74,10 @@ class IndexView(LoginRequiredMixin, TemplateView):
 @login_required
 def upgrade_me(request):
     user = request.user
-    premium_group = Group.objects.get(name='authors')
+    author_group = Group.objects.get(name='authors')
     if not request.user.groups.filter(name='authors').exists():
-        premium_group.user_set.add(user)
-    return redirect('/')
+        author_group.user_set.add(user)
+    return redirect('/user_page/')
+
+def user_page(request):
+    return render(request, 'templates/user_page.html')
