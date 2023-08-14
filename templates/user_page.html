@@ -5,7 +5,7 @@
 <div> Здесь может содержаться персональная информация для каждого пользователя</div>
 
 {% if is_not_author %}
-<button><a href="{% url 'upgrade_status' %}">Стать автором</a></button>
+<button><a href="{% url 'upgrade' %}">Стать автором</a></button>
 {% endif %}
 <hr>
 <button><a href="{% url 'logout_user' %}">Выйти</a></button>
