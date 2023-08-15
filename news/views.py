@@ -1,5 +1,5 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from .models import Post
 from .filters import NewsFilter
 from .forms import NewForm
@@ -36,7 +36,8 @@ class NewDetailView(DetailView):
     template_name = 'new.html'
     context_object_name = 'new'
 
-class NewAddCreateView(CreateView):
+class NewAddCreateView(CreateView, PermissionRequiredMixin):
+    permission_required = ('news.add_post')
     template_name = 'new_add.html'
     form_class = NewForm
 
@@ -46,7 +47,8 @@ class NewAddCreateView(CreateView):
         # post.author = ???
         return super().form_valid(form)
 
-class NewUpdateView(LoginRequiredMixin, UpdateView):
+class NewUpdateView(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
+    permission_required = ('news.change_post')
     template_name = 'new_edit.html'
     form_class = NewForm
 
