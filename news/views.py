@@ -1,9 +1,9 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from .models import Post
+from .models import Post, Category
 from .filters import NewsFilter
 from .forms import NewForm
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -42,9 +42,11 @@ class NewAddCreateView(CreateView, PermissionRequiredMixin):
     form_class = NewForm
 
     def form_valid(self, form):
-        post = form.save(commit=False)
-        post.post_types = 'NEWS'
-        # post.author = ???
+        self.object = form.save(commit=False)
+        if 'news' in self.request.path:
+            types = 'NEWS'
+        elif 'article' in self.request.path:
+            types = 'ARTI'
         return super().form_valid(form)
 
 class NewUpdateView(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
@@ -83,3 +85,28 @@ def upgrade_me(request):
 
 def user_page(request):
     return render(request, 'templates/user_page.html')
+
+
+class CategoryListView(NewsListView):
+    model = Post
+    template_name = 'news/category_list.html'
+    context_object_name = 'category_news_list'
+
+    def get_queryset(self):
+        self.category = get_object_or_404(Category, id=self.kwargs['pk'])
+        queryset = Post.objects.filter(category=self.category)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is not_subscriber'] = self.request.user not in self.category.subscribers.all()
+        context['category'] = self.category
+        return context
+@login_required
+def subdcribe(request, pk):
+    user = request.user
+    category = Category.objects.get(id=pk)
+    category.subscribers.add(user)
+
+    message = 'Вы подписались на рассылку новостей'
+    return render(request, 'news/subscribe.html', {'category': category, 'message': message})

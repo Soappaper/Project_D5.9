@@ -41,14 +41,11 @@ class Category(models.Model):
         (weather, 'Погода'),
     ]
 
-    category_name = models.CharField(max_length=25,
-                                     choices=CATEGORY_TYPES,
-                                     default=sport,
-                                     unique=True
-                                     )
-
+    category_name = models.CharField(max_length=25, unique=True)
+    subscribers = models.ManyToManyField(User, blank=True, null=True, related_name='categories')
     def __str__(self):
         return self.category_name.title()
+
 
 
 class Post(models.Model):

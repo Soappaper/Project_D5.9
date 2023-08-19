@@ -33,13 +33,13 @@
                            </a>
                        </li>
                        <li class="nav-item">
-                           <a class="nav-link" href="/news/">Новости</a>
+                           <a class="nav-link" href="{% url 'news' %}">Новости</a>
                        </li>
                        <li class="nav-item">
-                           <a class="nav-link" href="/news/search/">Поиск</a>
+                           <a class="nav-link" href="{% url 'search' %}">Поиск</a>
                        </li>
                        <li class="nav-item">
-                            <a class="nav-link" href="/news/add">Create News</a>
+                            <a class="nav-link" href="{% url 'new_add' %}">Create News</a>
                        </li>
                        <li class="nav-item">
                             <a class="nav-link" href="{% url 'login' %}">Login/Registration</a>
