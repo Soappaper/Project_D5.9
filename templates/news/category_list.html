@@ -9,7 +9,7 @@ News
     {if is_not_subscriber %}
         <p class="text-center"><a href="{% url 'subscribe' category.id %}" class="btn btn-secondary btm-sm">Подписаться</a> </p>
     {% endif
-%}
+    %}
    <h1>Все новости</h1>
         {{ news|length }}
         <hr>

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
-from allauth.account.forms import SignupForm
+from django.urls import reverse
 
 TYPE_POST = [
     ('article', 'статья'),
@@ -42,7 +42,7 @@ class Category(models.Model):
     ]
 
     category_name = models.CharField(max_length=25, unique=True)
-    subscribers = models.ManyToManyField(User, blank=True, null=True, related_name='categories')
+    subscribers = models.ManyToManyField(User, blank=True, related_name='categories')
     def __str__(self):
         return self.category_name.title()
 
@@ -68,7 +68,7 @@ class Post(models.Model):
 
     # добавим абсолютный путь, чтобы после создания нас перебрасывало на страницу с новостью
     def get_absolute_url(self):
-        return f'/news/{self.id}'
+        return reverse('new', args=[str(self.id)])
 
     def like(self):
         self.post_rating += 1

@@ -37,20 +37,19 @@ class NewDetailView(DetailView):
     context_object_name = 'new'
 
 class NewAddCreateView(CreateView, PermissionRequiredMixin):
-    permission_required = ('news.add_post')
+    permission_required = ('news.add_post',)
     template_name = 'new_add.html'
     form_class = NewForm
+    model = Post
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
-        if 'news' in self.request.path:
-            types = 'NEWS'
-        elif 'article' in self.request.path:
-            types = 'ARTI'
+        if 'article' in self.request.path:
+            self.object.types = 'ARTI'
         return super().form_valid(form)
 
 class NewUpdateView(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
-    permission_required = ('news.change_post')
+    permission_required = ('news.change_post',)
     template_name = 'new_edit.html'
     form_class = NewForm
 
@@ -81,10 +80,10 @@ def upgrade_me(request):
     author_group = Group.objects.get(name='authors')
     if not request.user.groups.filter(name='authors').exists():
         author_group.user_set.add(user)
-    return redirect('/user_page/')
+    return redirect('/news/')
 
 def user_page(request):
-    return render(request, 'templates/user_page.html')
+    return render(request, 'user_page.html')
 
 
 class CategoryListView(NewsListView):
