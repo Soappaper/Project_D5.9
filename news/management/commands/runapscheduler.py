@@ -19,9 +19,9 @@ logger = logging.getLogger(__name__)
 def my_job():
     today = datetime.datetime.now()
     last_week = today - datetime.timedelta(days=7)
-    posts = Post.objects.filter(created_at__gte=last_week)
-    categories = set(posts.value_list('category__name', flat=True))
-    subscribers = set(Category.objects.filters(name__in=categories). values_list('subscribers__mail', flat=True))
+    posts = Post.objects.filter(data_create__gte=last_week)
+    categories = set(posts.values_list('category__name', flat=True))
+    subscribers = set(Category.objects.filter(name__in=categories). values_list('subscribers__mail', flat=True))
 
     html_content = render_to_string(
         'daily_news.html',
@@ -34,7 +34,7 @@ def my_job():
 
     msg = EmailMultiAlternatives(
         subject='Статьи за неделю',
-        body = '',
+        body='',
         from_email=settings.DEFAULT_FROM_EMAIL,
         to=subscribers,
     )
@@ -59,7 +59,7 @@ class Command(BaseCommand):
         # добавляем работу нашему задачнику
         scheduler.add_job(
             my_job,
-            trigger=CronTrigger(day_of_week="mon", hour="20", minute="47"),
+            trigger=CronTrigger(day_of_week="tue", hour="17", minute="57"),
             # То же, что и интервал, но задача тригера таким образом более понятна django
             id="my_job",  # уникальный айди
             max_instances=1,
