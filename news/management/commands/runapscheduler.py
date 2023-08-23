@@ -20,8 +20,8 @@ def my_job():
     today = datetime.datetime.now()
     last_week = today - datetime.timedelta(days=7)
     posts = Post.objects.filter(data_create__gte=last_week)
-    categories = set(posts.values_list('category__name', flat=True))
-    subscribers = set(Category.objects.filter(name__in=categories). values_list('subscribers__mail', flat=True))
+    categories = set(posts.values_list('category__category_name', flat=True))
+    subscribers = set(Category.objects.filter(category_name__in=categories).values_list('subscribers__email', flat=True))
 
     html_content = render_to_string(
         'daily_news.html',
@@ -59,7 +59,7 @@ class Command(BaseCommand):
         # добавляем работу нашему задачнику
         scheduler.add_job(
             my_job,
-            trigger=CronTrigger(day_of_week="tue", hour="17", minute="57"),
+            trigger=CronTrigger(day_of_week="wed", hour="20", minute="18"),
             # То же, что и интервал, но задача тригера таким образом более понятна django
             id="my_job",  # уникальный айди
             max_instances=1,
