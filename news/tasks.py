@@ -21,11 +21,11 @@ def printer(N):
 def weekly_sending():
     today = datetime.datetime.now()
     last_week = today - datetime.timedelta(days=7)
-    posts = Post.objects.filter(time_in__gte = last_week)
-    categories = set(posts.values_list('category__category_name', flat = True))
+    posts = Post.objects.filter(time_in__gte=last_week)
+    categories = set(posts.values_list('category__category_name', flat=True))
     subscribers = set(Category.objects.filter(name_category__in=categories).values_list('subscribers__email', flat=True))
 
-    html_contetnt = render_to_string(
+    html_content = render_to_string(
         "daily_news.html",
         {
             'link': settings.SITE_URL,
@@ -41,7 +41,7 @@ def weekly_sending():
         to=subscribers,
     )
 
-    msg.attach_alternative(html_contetnt, 'text/html')
+    msg.attach_alternative(html_content, 'text/html')
     msg.send()
 
     #return HttpResponse("Weekly news sent successfully!")

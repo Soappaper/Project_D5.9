@@ -163,6 +163,8 @@ EMAIL_HOST_PASSWORD = 'ruhunmgxbzcmdxxz'  # пароль от почты
 EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 APSCHEDULER_RUN_NOW_TIMEOUT = 25
 
@@ -171,3 +173,4 @@ CELERY_RESULT_BACKEND = 'redis://:VrUK9UeQEE5ZQ9Sm1P7Mh0vpUOJqt2bJ@redis-18054.c
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
