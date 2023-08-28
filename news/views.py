@@ -49,6 +49,7 @@ class NewAddCreateView(CreateView, PermissionRequiredMixin):
         self.object = form.save(commit=False)
         if 'article' in self.request.path:
             self.object.types = 'ARTI'
+        self.object.save()
         send_email_post.delay(self.object.pk)
         return super().form_valid(form)
 

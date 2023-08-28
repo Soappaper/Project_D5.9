@@ -51,7 +51,7 @@ def weekly_sending():
 def send_email_post(pk):
     post = Post.objects.get(pk=pk)
     categories = post.category.all()
-    title = post.head_name
+    title = post.title
     subscribers_emails = []
     for category in categories:
         subscribers_users = category.subscribers.all()
