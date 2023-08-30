@@ -1,10 +1,11 @@
 from django.urls import path
 from .views import *
 from django.contrib.auth.views import LoginView
+from django.views.decorators.cache import cache_page
 
 urlpatterns = [
-   path('news/', NewsListView.as_view(template_name="news.html"), name='news'),
-   path('<int:pk>', NewDetailView.as_view(), name='new'),
+   path('news/', cache_page(60)(NewsListView.as_view(template_name="news.html")), name='news'),
+   path('<int:pk>', cache_page(300)(NewDetailView.as_view()), name='new'),
    path('search/', SearchNewsListView.as_view(template_name="search.html"), name='search'),
    path('add/', NewAddCreateView.as_view(), name='new_add'),
    path('edit/<int:pk>', NewUpdateView.as_view(), name='new_edit'),
