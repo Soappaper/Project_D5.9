@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from .tasks import send_email_post, hello, printer
 from django.core.cache import cache
+import logging
 
 class NewsListView(ListView):
     model = Post
@@ -26,6 +27,7 @@ class SearchNewsListView(ListView):
     template_name = 'search.html'
     context_object_name = 'news'
     paginate_by = 10
+    logging.error('test_debug')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
